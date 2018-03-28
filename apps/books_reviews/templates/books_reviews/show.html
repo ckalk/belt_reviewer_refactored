@@ -1,0 +1,91 @@
+{% extends 'books_reviews/layout.html' %}
+{% load my_filters %}
+
+<!-- set page title -->
+{% block title %}
+    Show Book and Its Reviews
+{% endblock %}
+
+<!-- set any nav bar link of current page to disabled -->
+{% block home_link %}{% endblock %}
+{% block addbook_link %}disabled{% endblock %}
+
+
+{% block body%}
+<!-- content after navbar and error/success messages -->
+
+    <div class="page-header">
+        <h3>{{book.title}}</h3>
+        <h4>Author: {{book.author}}</h4>
+    </div>
+
+    <div class="row">
+
+        <!-- content on left side of page -->
+        <div class= "col-sm-6">
+            <h3>Reviews:</h3>
+            {% for item in reviews %}
+                <hr>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        Rating: {{ item.rating }}
+                        {% for i in item.rating|times %}
+                            <span class="fa fa-star"></span>
+                        {% endfor %}
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{%url 'reviewers:showuser' item.reviewer.id %}">{{ item.reviewer.alias }}</a> says: {{ item.review }} 
+                    </li>
+                    <li class="list-group-item">Posted on {{ item.created_at }}
+                        {% if item.reviewer.id == request.session.id %}
+                            <a class="ml-5" href="{%url 'books:delreview' item.id %}">Delete this Review</a>
+                        {% endif %}
+                    </li>                   
+                </ul>  
+                
+            {% endfor %}
+        </div>
+
+        <!-- content on right side of page -->
+        <div class= "col-sm-6">
+            <h4> Add a Review:</h4>
+
+            <form action="{%url 'books:addreview' book.id %}" method="post">
+
+                {% csrf_token %}
+        
+                <div class="row form-group">
+                    <label for="review" class="col-sm-2 lead">
+                        Review:
+                    </label>
+                    <input type="textarea" class="form-control" rows="5" name="review" placeholder="Enter your review">
+                </div>
+        
+                <div class="row form-group">
+                    <label for="rating" class="col-sm-2 lead">
+                        Rating:
+                    </label>
+                    <div class="col-sm-2">
+                        <select class="form-control " name="rating" id="rating">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <label>
+                        stars
+                    </label>
+                </div>
+    
+                <button type="submit" class="btn btn-primary">
+                    Submit review
+                </button>
+    
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'books_reviews/layout.html' %}
+{% load my_filters %}
+
+<!-- set page title -->
+{% block title %}
+    Books Home
+{% endblock %}
+
+<!-- set variation in msg on in nav-brand part of  nav bar  -->
+{% block user_msg %}
+    Welcome, {{ request.session.alias }}!
+{% endblock %}
+
+<!-- set any nav bar link of current page to disabled -->
+{% block home_link %}disabled{% endblock %}
+{% block addbook_link %}{% endblock %}
+
+
+{% block body%}
+<!-- content after navbar and error/success messages -->
+    <div class="row">
+
+        <!-- left side of body content -->
+        <div class= "col-sm-6">
+            <h3>Recent Book Reviews:</h3>
+            {% for item in last3_reviews %}
+                <hr>
+                <a href="{%url 'books:showbook' item.book.id %}">{{ item.book.title }}</a> 
+
+                <ul class="list-group mr-5">
+                    <li class="list-group-item">
+                        Rating: {{ item.rating }}
+                        {% for i in item.rating|times %}
+                            <span class="fa fa-star"></span>
+                        {% endfor %}
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{%url 'reviewers:showuser' item.reviewer.id %}">{{ item.reviewer.alias }}</a> says: {{ item.review }} 
+                    </li>
+                    <li class="list-group-item">
+                            Posted on {{ item.created_at }}
+                    </li>                   
+                </ul>  
+                
+            {% endfor %}
+        </div>
+
+        <!-- right side of body content -->
+        <div class= "col-sm-6">
+            <h4> Other Books with Reviews:</h4>
+            <div class="pre-scrollable border border-primary">
+            <ul class="list-group">
+                {% for item in books_w_reviews %}
+                    <li class="list-group-item ml-3">
+                        <a href="{%url 'books:showbook' item.0 %}">{{ item.1 }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>   
+
+{% endblock %}

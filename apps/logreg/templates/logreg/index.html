@@ -1,0 +1,161 @@
+{% extends 'logreg/layout.html' %}
+
+{% block container %}
+
+    <h1>Welcome!</h1>
+
+    <div class="row">
+
+    <!-- registration (left) side of page -->
+        <div class="card col-md-6">
+
+            <h3 class="card-header primary-color white-text">
+                Register
+            </h3>
+
+            <div class="card-body">
+
+                {% if messages %}
+                    <div id="errors">
+                        <ul class="messages">
+                            {% for message in messages %}
+                                {% if "reg error" in message.tags %}
+                                <li  class="text-danger">
+                                {{ message }}
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                {% if messages %}
+                <div id="successes">
+                    <ul class="messages">
+                        {% for message in messages %}
+                            {% if "success" in message.tags %}
+                            <li  class="text-success">
+                            {{ message }}
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <form action="{%url 'logreg:register' %}" method="post">
+
+                    {% csrf_token %}
+
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-3 col-form-label">
+                            Name:
+                        </label>
+                        <div class="col-sm-9 ">
+                            <input type="text" class="form-control" name="name" placeholder="Enter your full name">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="alias" class="col-sm-3 col-form-label">
+                            Alias:
+                        </label>
+                        <div class="col-sm-9 ">
+                            <input type="text" class="form-control" name="alias" placeholder="Enter the alias you want displayed">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-3 col-form-label">
+                            Email address:
+                        </label>
+                        <div class="col-sm-9 ">
+                            <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-3 col-form-label">
+                            Password:
+                        </label>
+                        <div class="col-sm-9 ">
+                            <input type="password" class="form-control" name="password" aria-describedby="pwdHelp" placeholder="Choose a password">
+                            <small id="pwdHelp" class="form-text text-muted">Passwords must be at least 8 characters long.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="confirm_password" class="col-sm-3 col-form-label">
+                            Confirm Password:
+                        </label>
+                        <div class="col-sm-9 ">
+                            <input type="password" class="form-control" name="confirm_password" aria-describedby="confpwdHelp" placeholder="Enter your password again">
+                            <small id="confpwdHelp" class="form-text text-muted">Confirm your password by entering it again. It must match what you entered for Password.</small>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Register
+                    </button>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- login (right) side of page -->
+        <div class="card col-md-6">
+
+            <h3 class="card-header primary-color white-text">
+                Login
+            </h3>
+
+            <div class="card-body">
+
+                {% if messages %}
+                <div id="errors">
+                    <ul class="messages">
+                        {% for message in messages %}
+                            {% if "login error" in message.tags %}
+                            <li  class="text-danger">
+                            {{ message }}
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <form action="{%url 'logreg:login' %}" method="post">
+
+                    {% csrf_token %}
+
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-3 col-form-label">
+                            Email address:
+                        </label>
+                        <div class="col-sm-9 ">
+                            <input type="email" class="form-control" name="email"  placeholder="Enter your email">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-3 col-form-label">
+                            Password:
+                        </label>
+                        <div class="col-sm-9 ">
+                            <input type="password" class="form-control" name="password" placeholder="Enter your password">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Login
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
